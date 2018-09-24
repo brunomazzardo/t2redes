@@ -1,7 +1,9 @@
+from time import sleep
+from random import randint
 import sys
 
-pts_player1 = 0
-pts_player2 = 0
+pts_jogador = 0
+pts_pc = 0
 
 while True:
 
@@ -19,9 +21,9 @@ while True:
     tabuleiro_inicial = '''
 --- COMO JOGAR ---
 
-Quando for sua vez, digite o número correspondente à posição no tabuleiro para fazer sua jogada nela.
+Quando for sua vez, digite o numero correspondente a posicao no tabuleiro para fazer sua jogada nela.
 
-Por exemplo, digamos que você queira jogar no centro, então você digita 5.
+Por exemplo, digamos que voce queira jogar no centro, entao voce digita 5.
 
      |     |     
   1  |  2  |  3  
@@ -36,32 +38,31 @@ _____|_____|_____
 
     print(tabuleiro_inicial)
 
-    print('Você quer ser o X (xis) ou a O (bola)?', end=' ')
+    print('Voce quer ser o X (xis) ou a O (bola)?',end=' ')
 
     while j != 'O' and j != 'X':
         j = str(input('Digite X ou O e pressione Enter para escolher: ')).strip().upper()
         if j != 'O' and j != 'X':
-            print('\nEscolha inválida!\n')
+            print('\nEscolha invalida!\n')
 
     if j == 'O':
-        j2 = 'X'
-        print('\nEntão eu fico com o X.')
+        adv = 'X'
+        print('\nEntao eu fico com o X.')
     elif j == 'X':
-        j2 = 'O'
-        print('\nEntão eu fico com a O.')
-
+        adv = 'O'
+        print('\nEntao eu fico com a O.')
     print('\nQuem joga primeiro?', end=' ')
 
-    while primeiro != 'PLAYER 1' and primeiro != 'PLAYER 2':
-        instr = 'Digite PLAYER 1 e pressione Enter para você começar, ou digite PLAYER 2 e pressione Enter para eu começar: '
+    while primeiro != 'EU' and primeiro != 'PC':
+        instr = 'Digite EU e pressione Enter para voce comecar, ou digite PC e pressione Enter para eu comecar: '
         primeiro = str(input(instr)).strip().upper()
-        if primeiro != 'PLAYER 1' and primeiro != 'PLAYER 2':
-            print('\nEscolha inválida!\n')
+        if primeiro != 'EU' and primeiro != 'PC':
+            print('\nEscolha invalida!\n')
 
-    if primeiro == 'PLAYER 1':
-        print('\nEntão você joga primeiro.\n')
-    elif primeiro == 'PLAYER 2':
-        print('\nEntão eu jogo primeiro.\n')
+    if primeiro == 'EU':
+        print('\nEntao voce joga primeiro.\n')
+    elif primeiro == 'PC':
+        print('\nEntao eu jogo primeiro.\n')
 
     def atualizar_tabuleiro():
         global p1, p2, p3, p4, p5, p6, p7, p8, p9
@@ -83,16 +84,16 @@ _____|_____|_____
 
         while True:
             try:
-                jogada = int(input('Digite a posição da sua jogada (1 a 9) e pressione Enter: '))
+                jogada = int(input('Digite a posicao da sua jogada (1 a 9) e pressione Enter: '))
                 break
             except ValueError:
-                print('\nValor digitado inválido. Digite um número inteiro de 1 a 9!\n')
+                print('\nValor digitado invalido. Digite um numero inteiro de 1 a 9!\n')
 
     def rotina_j1():
         global jogada
         global pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9
 
-        msg_ocupado = '\nEste espaço já está ocupado!\n'
+        msg_ocupado = '\nEste espaco ja esta ocupado!\n'
 
         jogada_j1()
 
@@ -100,7 +101,7 @@ _____|_____|_____
             jogada_j1()
 
             if jogada not in range(1, (9 + 1)):
-                print('\nNúmero inválido!\n')
+                print('\nNumero invalido!\n')
 
         while jogada == 1 and pos1 == 'ocupada' or \
             jogada == 2 and pos2 == 'ocupada' or \
@@ -148,40 +149,57 @@ _____|_____|_____
             pos9 = 'ocupada'
 
     def atualizar_jogadas_j2():
-        global jogada
+        global jogada, jogada_aleatoria, adv
         global p1, p2, p3, p4, p5, p6, p7, p8, p9
         global pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9
 
-        if jogada == 1:
-            p1 = j2
+        print('Deixe-me pensar na minha jogada...')
+        sleep(1.5)
+        jogada_aleatoria = randint(1, 9)
+
+        while jogada_aleatoria == 1 and pos1 == 'ocupada' or \
+            jogada_aleatoria == 2 and pos2 == 'ocupada' or \
+            jogada_aleatoria == 3 and pos3 == 'ocupada' or \
+            jogada_aleatoria == 4 and pos4 == 'ocupada' or \
+            jogada_aleatoria == 5 and pos5 == 'ocupada' or \
+            jogada_aleatoria == 6 and pos6 == 'ocupada' or \
+            jogada_aleatoria == 7 and pos7 == 'ocupada' or \
+            jogada_aleatoria == 8 and pos8 == 'ocupada' or \
+                jogada_aleatoria == 9 and pos9 == 'ocupada':
+            jogada_aleatoria = randint(1, 9)
+
+        print('\nEu jogo na posicao {}!'.format(jogada_aleatoria))
+
+        if jogada_aleatoria == 1:
+            p1 = adv
             pos1 = 'ocupada'
-        elif jogada == 2:
-            p2 = j2
+        elif jogada_aleatoria == 2:
+            p2 = adv
             pos2 = 'ocupada'
-        elif jogada == 3:
-            p3 = j2
+        elif jogada_aleatoria == 3:
+            p3 = adv
             pos3 = 'ocupada'
-        elif jogada == 4:
-            p4 = j2
+        elif jogada_aleatoria == 4:
+            p4 = adv
             pos4 = 'ocupada'
-        elif jogada == 5:
-            p5 = j2
+        elif jogada_aleatoria == 5:
+            p5 = adv
             pos5 = 'ocupada'
-        elif jogada == 6:
-            p6 = j2
+        elif jogada_aleatoria == 6:
+            p6 = adv
             pos6 = 'ocupada'
-        elif jogada == 7:
-            p7 = j2
+        elif jogada_aleatoria == 7:
+            p7 = adv
             pos7 = 'ocupada'
-        elif jogada == 8:
-            p8 = j2
+        elif jogada_aleatoria == 8:
+            p8 = adv
             pos8 = 'ocupada'
-        elif jogada == 9:
-            p9 = j2
+        elif jogada_aleatoria == 9:
+            p9 = adv
             pos9 = 'ocupada'
 
     def checar_vencedor():
-        global j, j2, turnos, vencedor, pts_player1, pts_player2
+        global j, adv, turnos, vencedor, pts_jogador, pts_pc
         global p1, p2, p3, p4, p5, p6, p7, p8, p9
 
         if p1 == j and p2 == j and p3 == j or \
@@ -192,22 +210,22 @@ _____|_____|_____
            p3 == j and p6 == j and p9 == j or \
            p4 == j and p5 == j and p6 == j or \
            p7 == j and p8 == j and p9 == j:
-            print('PLAYER 1 GANHOU!\n')
-            pts_player1 += 1
-            vencedor = 'PLAYER 1'
+            print('VOCE GANHOU!\n')
+            pts_jogador += 1
+            vencedor = 'EU'
             turnos = 10
 
-        if p1 == j2 and p2 == j2 and p3 == j2 or \
-           p1 == j2 and p4 == j2 and p7 == j2 or \
-           p1 == j2 and p5 == j2 and p9 == j2 or \
-           p2 == j2 and p5 == j2 and p8 == j2 or \
-           p3 == j2 and p5 == j2 and p7 == j2 or \
-           p3 == j2 and p6 == j2 and p9 == j2 or \
-           p4 == j2 and p5 == j2 and p6 == j2 or \
-           p7 == j2 and p8 == j2 and p9 == j2:
-            print('PLAYER 2 GANHOU!\n')
-            pts_player2 += 1
-            vencedor = 'PLAYER 2'
+        if p1 == adv and p2 == adv and p3 == adv or \
+           p1 == adv and p4 == adv and p7 == adv or \
+           p1 == adv and p5 == adv and p9 == adv or \
+           p2 == adv and p5 == adv and p8 == adv or \
+           p3 == adv and p5 == adv and p7 == adv or \
+           p3 == adv and p6 == adv and p9 == adv or \
+           p4 == adv and p5 == adv and p6 == adv or \
+           p7 == adv and p8 == adv and p9 == adv:
+            print('EU GANHEI!\n')
+            pts_pc += 1
+            vencedor = 'PC'
             turnos = 10
 
     def atualizar_tudo():
@@ -215,14 +233,14 @@ _____|_____|_____
         global turnos
         global vencedor
 
-        if primeiro == 'PLAYER 1':
+        if primeiro == 'EU':
             rotina_j1()
             atualizar_jogadas_j1()
             atualizar_tabuleiro()
             checar_vencedor()
 
             if turnos == 5:
-                print('NÓS EMPATAMOS!\n')
+                print('NOS EMPATAMOS!\n')
                 turnos = 10
                 vencedor = 'EMPATE'
 
@@ -231,13 +249,13 @@ _____|_____|_____
                 atualizar_tabuleiro()
                 checar_vencedor()
 
-        elif primeiro == 'PLAYER 2':
+        elif primeiro == 'PC':
             atualizar_jogadas_j2()
             atualizar_tabuleiro()
             checar_vencedor()
 
             if turnos == 5:
-                print('NÓS EMPATAMOS!\n')
+                print('NOS EMPATAMOS!\n')
                 turnos = 10
                 vencedor = 'EMPATE'
 
@@ -254,15 +272,15 @@ _____|_____|_____
         atualizar_tudo()
 
     print('-------- PLACAR --------')
-    print('Você: {} | Computador: {}'.format(pts_player1, pts_player2))
+    print('Voce: {} | Computador: {}'.format(pts_jogador, pts_pc))
     print('------------------------')
 
     while True:
-        reiniciar = input('\nQuer jogar de novo? Digite S para sim ou N para não: ').lower()
+        reiniciar = input('\nQuer jogar de novo? Digite S para sim ou N para nao: ').lower()
 
         if reiniciar in ('s', 'n', '"s"', '"n"'):
             break
-        print('\nResposta inválida!')
+        print('\nResposta invalida!')
 
     if reiniciar == 's' or reiniciar == '"s"':
         print('\n-----------------------------------------------------')
