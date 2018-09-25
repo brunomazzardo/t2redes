@@ -14,6 +14,10 @@ def make_play(json):
     play_request = namedtuple("request_connection", json.keys())(*json.values())
     game_update = game_manager.make_play(play_request.id, play_request.numero_quadrado, play_request.player)
     if game_update is not None:
+        if game_update is True and play_request.player == 1:
+            update_game(play_request.id, 'Jogador um Ganhou')
+        elif game_update is True and play_request.player == 2:
+            update_game(play_request.id, 'Jogador dois Ganhou')
         update_game(play_request.id, game_update)
         if int(play_request.player) == 1:
             turn_second(play_request.id)
