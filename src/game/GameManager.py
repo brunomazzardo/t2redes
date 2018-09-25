@@ -6,18 +6,22 @@ class GameManager:
         self.games = []
 
     def list_games(self):
-        return self.games
+        return [_.to_json() for _ in self.games]
 
-    def create_game(self):
-        game = Game()
+    def create_game(self, player):
+        game = Game(player)
         self.games.append(game)
+        return game.to_json()
 
+    def join_game(self, player, game_id):
+        for game in self.games:
+            if game.id == game_id:
+                game.second_player = player
+                return game.id
+        return None
 
-class GameManagerSingleton:
-    game_manager = None
-
-    @staticmethod
-    def get_instance(self):
-        if self.game_manager is None:
-            self.game_manager = GameManager()
-        return self.game_manager
+    def make_play(self, game_id, square_number, player):
+        for game in self.games:
+            if game.id == game_id:
+                return game.make_play(square_number, player)
+        return None
