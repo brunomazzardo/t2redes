@@ -4,7 +4,7 @@ import jwt
 class Game:
     def __init__(self, owner):
         self.owner = owner
-        self.id = jwt.encode(self.owner, 'secret', algorithm='HS256').decode("utf-8")
+        self.id = jwt.encode({'name':self.owner}, 'secret', algorithm='HS256').decode("utf-8")
         self.second_player = None
         self.j = ''
         self.j2 = ''
@@ -24,9 +24,9 @@ class Game:
 
     def make_play(self, numero_quadrado, player):
         if player == 1:
-            return self.atualizar_jogadas_j1(numero_quadrado)
+            return self.atualizar_jogadas_j1(int(numero_quadrado))
         else:
-            return self.atualizar_jogadas_j2(numero_quadrado)
+            return self.atualizar_jogadas_j2(int(numero_quadrado))
 
     def atualizar_jogadas_j1(self, jogada):
         if jogada == 1:

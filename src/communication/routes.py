@@ -15,7 +15,7 @@ def list_agents():
 
 @main.route('/create_game', methods=['POST'])
 def create_game():
-    player = request.get_json()
+    player = request.get_data().decode('UTF-8')
     return json.dumps(game_manager.create_game(player))
 
 

@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from flask_socketio import emit
 
-from src.communication.emiters import update_game
+from src.communication.emiters import update_game, turn_second, turn_owner
 from src.game.GameManagerSingleton import GetGameManager
 from .. import socketio
 
@@ -15,6 +15,10 @@ def make_play(json):
     game_update = game_manager.make_play(play_request.id, play_request.numero_quadrado, play_request.player)
     if game_update is not None:
         update_game(play_request.id, game_update)
+        if int(play_request.player) == 1:
+            turn_second(play_request.id)
+        else:
+            turn_owner(play_request.id)
 
 
 @socketio.on('connect')
